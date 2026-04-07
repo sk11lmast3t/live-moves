@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { authService } from '../services/contentService';
 
 const Login = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -14,7 +16,7 @@ const Login = () => {
 
     try {
       await authService.login(email, password);
-      window.location.href = '/';
+      navigate('/');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
     } finally {
@@ -69,9 +71,9 @@ const Login = () => {
 
         <p className="text-center text-gray-400 mt-6">
           Don't have an account?{' '}
-          <a href="/register" className="text-secondary hover:underline">
+          <Link to="/register" className="text-secondary hover:underline">
             Sign up
-          </a>
+          </Link>
         </p>
       </div>
     </div>

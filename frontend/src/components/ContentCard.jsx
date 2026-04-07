@@ -5,6 +5,9 @@ const ContentCard = ({ content, onClick }) => {
     <div
       onClick={onClick}
       className="bg-gray-800 rounded-lg overflow-hidden hover:transform hover:scale-105 transition duration-300 cursor-pointer group"
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === 'Enter' && onClick?.()}
     >
       <div className="relative overflow-hidden h-64">
         <img
@@ -13,7 +16,14 @@ const ContentCard = ({ content, onClick }) => {
           className="w-full h-full object-cover group-hover:brightness-75 transition"
         />
         <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition flex items-center justify-center">
-          <button className="opacity-0 group-hover:opacity-100 transition bg-secondary text-white px-6 py-3 rounded-full font-bold">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onClick?.();
+            }}
+            className="opacity-0 group-hover:opacity-100 transition bg-secondary text-white px-6 py-3 rounded-full font-bold"
+          >
             ▶ Play
           </button>
         </div>

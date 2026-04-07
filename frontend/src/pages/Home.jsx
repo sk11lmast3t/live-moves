@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import ContentGrid from '../components/ContentGrid';
 import { contentService } from '../services/contentService';
 
 const Home = () => {
+  const navigate = useNavigate();
   const [trending, setTrending] = useState([]);
   const [featured, setFeatured] = useState(null);
   const [movies, setMovies] = useState([]);
@@ -43,9 +45,9 @@ const Home = () => {
       {featured && <Hero featured={featured} />}
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ContentGrid title="Trending Now" content={trending} loading={loading} error={error} />
-        <ContentGrid title="Popular Movies" content={movies} loading={loading} error={error} />
-        <ContentGrid title="Top Shows" content={shows} loading={loading} error={error} />
+        <ContentGrid title="Trending Now" content={trending} loading={loading} error={error} onItemClick={(item) => navigate(`/content/${item._id}`)} />
+        <ContentGrid title="Popular Movies" content={movies} loading={loading} error={error} onItemClick={(item) => navigate(`/content/${item._id}`)} />
+        <ContentGrid title="Top Shows" content={shows} loading={loading} error={error} onItemClick={(item) => navigate(`/content/${item._id}`)} />
       </main>
     </div>
   );
