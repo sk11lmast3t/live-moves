@@ -8,7 +8,8 @@
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "lint": "eslint src --fix",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "build": "echo \"Backend runtime build step not required\""
   },
   "keywords": [
     "streaming",

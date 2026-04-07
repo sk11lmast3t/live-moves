@@ -1,7 +1,20 @@
 import React from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+
+const linkClass = ({ isActive }) =>
+  `hover:text-secondary transition ${isActive ? 'text-secondary' : 'text-white'}`;
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [search, setSearch] = React.useState('');
+
+  const onSearch = (e) => {
+    e.preventDefault();
+    if (!search.trim()) return;
+    navigate(`/search?q=${encodeURIComponent(search.trim())}`);
+    setIsMenuOpen(false);
+  };
 
   return (
     <nav className="bg-primary border-b border-gray-700 sticky top-0 z-50">
@@ -9,28 +22,27 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-8">
             <div className="flex-shrink-0">
-              <span className="text-3xl font-bold text-secondary">StreamBox</span>
+              <Link to="/" className="text-3xl font-bold text-secondary">StreamBox</Link>
             </div>
             <div className="hidden md:flex space-x-6">
-              <a href="/" className="text-white hover:text-secondary transition">Home</a>
-              <a href="/movies" className="text-white hover:text-secondary transition">Movies</a>
-              <a href="/shows" className="text-white hover:text-secondary transition">Shows</a>
-              <a href="/trending" className="text-white hover:text-secondary transition">Trending</a>
+              <NavLink to="/" className={linkClass}>Home</NavLink>
+              <NavLink to="/movies" className={linkClass}>Movies</NavLink>
+              <NavLink to="/shows" className={linkClass}>Shows</NavLink>
+              <NavLink to="/trending" className={linkClass}>Trending</NavLink>
             </div>
           </div>
 
           <div className="flex items-center space-x-4">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="hidden md:block px-4 py-2 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-secondary"
-            />
-            <button className="text-white hover:text-secondary transition">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2 1m2-1l-2-1m2 1v2.5" />
-              </svg>
-            </button>
-            <button className="text-white hover:text-secondary transition">Profile</button>
+            <form onSubmit={onSearch}>
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search..."
+                className="hidden md:block px-4 py-2 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-secondary"
+              />
+            </form>
+            <button onClick={() => navigate('/login')} className="text-white hover:text-secondary transition">Profile</button>
             <button
               className="md:hidden"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -44,10 +56,10 @@ const Navbar = () => {
 
         {isMenuOpen && (
           <div className="md:hidden pb-4 space-y-2">
-            <a href="/" className="block text-white hover:text-secondary transition py-2">Home</a>
-            <a href="/movies" className="block text-white hover:text-secondary transition py-2">Movies</a>
-            <a href="/shows" className="block text-white hover:text-secondary transition py-2">Shows</a>
-            <a href="/trending" className="block text-white hover:text-secondary transition py-2">Trending</a>
+            <NavLink to="/" onClick={() => setIsMenuOpen(false)} className="block text-white hover:text-secondary transition py-2">Home</NavLink>
+            <NavLink to="/movies" onClick={() => setIsMenuOpen(false)} className="block text-white hover:text-secondary transition py-2">Movies</NavLink>
+            <NavLink to="/shows" onClick={() => setIsMenuOpen(false)} className="block text-white hover:text-secondary transition py-2">Shows</NavLink>
+            <NavLink to="/trending" onClick={() => setIsMenuOpen(false)} className="block text-white hover:text-secondary transition py-2">Trending</NavLink>
           </div>
         )}
       </div>

@@ -246,3 +246,32 @@ For issues and questions:
 ---
 
 **Start streaming, start building!** 🚀
+
+## Deploy on Vercel
+
+This repository is configured for Vercel **experimental services** (multi-service):
+- `frontend` service (Vite app) at route prefix `/`
+- `backend` service (Node/Express app) at route prefix `/_/backend`
+
+`vercel.json` also rewrites:
+- `/api/*` -> `/_/backend/api/*`
+- `/health` -> `/_/backend/health`
+
+### Required environment variables (Vercel Project Settings)
+
+Backend service:
+- `MONGODB_URI`
+- `JWT_SECRET`
+- `JWT_EXPIRE` (optional)
+- `CORS_ORIGIN` (set to your frontend Vercel URL)
+
+Frontend service:
+- `VITE_API_URL` (optional; default `/api`)
+
+### Vercel setup
+1. Import the repository into Vercel.
+2. Keep root directory as repository root.
+3. Ensure the project uses `experimentalServices` from `vercel.json`.
+4. Add env vars to the correct service scopes (frontend/backend).
+5. Deploy and verify `/health` and `/api/content`.
+
