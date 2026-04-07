@@ -246,3 +246,24 @@ For issues and questions:
 ---
 
 **Start streaming, start building!** 🚀
+
+
+## Deploy on Vercel
+
+This repository is configured for Vercel with:
+- Static frontend build output from `frontend/dist`
+- Serverless API function entrypoint at `api/[...all].mjs` (wrapping the Express app)
+
+### Required environment variables (Vercel Project Settings)
+- `MONGODB_URI`
+- `JWT_SECRET`
+- `JWT_EXPIRE` (optional)
+- `CORS_ORIGIN` (set to your Vercel frontend domain)
+- `VITE_API_URL` (set to `/api` for same-origin API on Vercel)
+
+### Vercel setup
+1. Import the repository into Vercel.
+2. Keep the detected root directory as repository root.
+3. The build/install/output settings are taken from `vercel.json`.
+4. Add the environment variables above for Production/Preview.
+5. Deploy.
