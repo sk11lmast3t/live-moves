@@ -266,7 +266,7 @@ Backend service:
 - `CORS_ORIGIN` (set to your frontend Vercel URL)
 
 Frontend service:
-- `VITE_API_URL` (optional; default `/api`)
+- `VITE_API_URL` (optional; default `/api`) **build-time variable**: Vite embeds `VITE_` variables during build, so changing this value requires a rebuild/redeploy (including Vercel redeploy).
 
 ### Vercel setup
 1. Import the repository into Vercel.

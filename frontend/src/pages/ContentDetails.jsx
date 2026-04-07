@@ -9,23 +9,41 @@ const ContentDetails = () => {
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
+    let cancelled = false;
+
     const loadItem = async () => {
+      setItem(null);
       setLoading(true);
       setError('');
+      setSuccessMessage('');
+      setErrorMessage('');
+
       try {
         const data = await contentService.getContentById(id);
-        setItem(data);
+        if (!cancelled) {
+          setItem(data);
+        }
       } catch (err) {
-        setError(err.response?.data?.message || err.message || 'Failed to load content');
+        if (!cancelled) {
+          setItem(null);
+          setError(err.response?.data?.message || err.message || 'Failed to load content');
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     };
 
     loadItem();
+
+    return () => {
+      cancelled = true;
+    };
   }, [id]);
 
   const addToWatchlist = async () => {
@@ -34,11 +52,14 @@ const ContentDetails = () => {
       return;
     }
 
+    setSuccessMessage('');
+    setErrorMessage('');
+
     try {
       await watchlistService.addToWatchlist(id);
-      setMessage('Added to watchlist');
+      setSuccessMessage('Added to watchlist');
     } catch (err) {
-      setMessage(err.response?.data?.message || 'Could not add to watchlist');
+      setErrorMessage(err.response?.data?.message || 'Could not add to watchlist');
     }
   };
 
@@ -69,7 +90,8 @@ const ContentDetails = () => {
                 <button onClick={addToWatchlist} className="bg-gray-700 px-6 py-2 rounded-lg font-bold">+ Watchlist</button>
               </div>
 
-              {message && <p className="text-sm text-accent">{message}</p>}
+              {successMessage && <p className="text-sm text-accent">{successMessage}</p>}
+              {errorMessage && <p className="text-sm text-red-400">{errorMessage}</p>}
             </div>
           </div>
         )}

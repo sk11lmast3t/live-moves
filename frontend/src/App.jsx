@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Browse from './pages/Browse';
 import ContentDetails from './pages/ContentDetails';
+import Profile from './pages/Profile';
 import './styles/global.css';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/trending" element={<Browse />} />
         <Route path="/search" element={<Browse />} />
         <Route path="/content/:id" element={<ContentDetails />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<div className="flex items-center justify-center h-screen bg-primary text-white"><h1>404 - Page Not Found</h1></div>} />
       </Routes>
     </Router>

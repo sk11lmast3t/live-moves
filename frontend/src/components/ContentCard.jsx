@@ -7,7 +7,16 @@ const ContentCard = ({ content, onClick }) => {
       className="bg-gray-800 rounded-lg overflow-hidden hover:transform hover:scale-105 transition duration-300 cursor-pointer group"
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => e.key === 'Enter' && onClick?.()}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          onClick?.();
+        }
+
+        if (e.key === ' ' || e.key === 'Space' || e.key === 'Spacebar') {
+          e.preventDefault();
+          onClick?.();
+        }
+      }}
     >
       <div className="relative overflow-hidden h-64">
         <img

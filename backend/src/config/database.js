@@ -1,29 +1,30 @@
 import mongoose from 'mongoose';
 
-let isConnecting = false;
+let connectionPromise = null;
 
 export const connectDB = async () => {
   if (mongoose.connection.readyState === 1) {
     return mongoose.connection;
   }
 
-  if (isConnecting) {
-    return mongoose.connection;
+  if (!connectionPromise) {
+    connectionPromise = mongoose.connect(process.env.MONGODB_URI)
+      .then(() => {
+        console.log('✅ MongoDB connected successfully');
+        return mongoose.connection;
+      })
+      .catch((error) => {
+        console.error('❌ MongoDB connection failed:', error.message);
+        connectionPromise = null;
+        throw error;
+      });
   }
 
-  isConnecting = true;
+  await connectionPromise;
 
-  try {
-    await mongoose.connect(process.env.MONGODB_URI);
-    console.log('✅ MongoDB connected successfully');
-  } catch (error) {
-    console.error('❌ MongoDB connection failed:', error.message);
-    if (!process.env.VERCEL) {
-      process.exit(1);
-    }
-    throw error;
-  } finally {
-    isConnecting = false;
+  if (mongoose.connection.readyState !== 1) {
+    connectionPromise = null;
+    throw new Error('MongoDB connection was not established');
   }
 
   return mongoose.connection;

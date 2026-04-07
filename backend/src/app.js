@@ -14,10 +14,14 @@ dotenv.config();
 const app = express();
 
 app.use(helmet());
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || '*',
-  credentials: true,
-}));
+
+if (process.env.CORS_ORIGIN) {
+  app.use(cors({
+    origin: process.env.CORS_ORIGIN,
+    credentials: true,
+  }));
+}
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
@@ -28,7 +32,14 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-connectDB();
+export const appReady = (async () => {
+  try {
+    await connectDB();
+  } catch (error) {
+    console.error('❌ Failed to initialize backend app:', error.message);
+    throw error;
+  }
+})();
 
 app.use('/api/auth', userRoutes);
 app.use('/api/content', contentRoutes);

@@ -1,9 +1,13 @@
-import app from './app.js';
+import app, { appReady } from './app.js';
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`
+const startServer = async () => {
+  try {
+    await appReady;
+
+    app.listen(PORT, () => {
+      console.log(`
 ╔═══════════════════════════════════════╗
 ║    🎬 StreamBox Backend Server 🎬   ║
 ║         v1.0.0 - Running              ║
@@ -13,4 +17,11 @@ app.listen(PORT, () => {
 ║ Health: http://localhost:${PORT}/health  ║
 ╚═══════════════════════════════════════╝
   `);
-});
+    });
+  } catch (error) {
+    console.error('❌ Server startup failed:', error.message);
+    process.exit(1);
+  }
+};
+
+startServer();

@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { watchlistService } from '../services/contentService';
 
 const Hero = ({ featured }) => {
   const navigate = useNavigate();
   const [message, setMessage] = React.useState('');
+
+  useEffect(() => {
+    setMessage('');
+  }, [featured?._id]);
 
   if (!featured) return null;
 

@@ -39,13 +39,28 @@ const Register = () => {
         <h1 className="text-3xl font-bold text-secondary mb-8 text-center">Create Account</h1>
         {error && <div className="bg-red-900 border border-red-700 text-red-100 px-4 py-3 rounded mb-4">{error}</div>}
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input name="username" value={form.username} onChange={handleChange} required placeholder="Username" className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white" />
-          <div className="grid grid-cols-2 gap-3">
-            <input name="firstName" value={form.firstName} onChange={handleChange} placeholder="First name" className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white" />
-            <input name="lastName" value={form.lastName} onChange={handleChange} placeholder="Last name" className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white" />
+          <div>
+            <label htmlFor="username" className="block text-white mb-2">Username</label>
+            <input id="username" name="username" value={form.username} onChange={handleChange} required placeholder="Username" className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white" />
           </div>
-          <input type="email" name="email" value={form.email} onChange={handleChange} required placeholder="Email" className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white" />
-          <input type="password" name="password" value={form.password} onChange={handleChange} required placeholder="Password" className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white" />
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label htmlFor="firstName" className="block text-white mb-2">First name</label>
+              <input id="firstName" name="firstName" value={form.firstName} onChange={handleChange} placeholder="First name" className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white" />
+            </div>
+            <div>
+              <label htmlFor="lastName" className="block text-white mb-2">Last name</label>
+              <input id="lastName" name="lastName" value={form.lastName} onChange={handleChange} placeholder="Last name" className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white" />
+            </div>
+          </div>
+          <div>
+            <label htmlFor="email" className="block text-white mb-2">Email</label>
+            <input id="email" type="email" name="email" value={form.email} onChange={handleChange} required placeholder="Email" className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white" />
+          </div>
+          <div>
+            <label htmlFor="password" className="block text-white mb-2">Password</label>
+            <input id="password" type="password" name="password" value={form.password} onChange={handleChange} required placeholder="Password" className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white" />
+          </div>
           <button type="submit" disabled={loading} className="w-full bg-secondary text-white py-2 rounded-lg font-bold disabled:opacity-50">
             {loading ? 'Creating account...' : 'Sign Up'}
           </button>

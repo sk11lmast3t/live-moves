@@ -34,6 +34,8 @@ const Browse = () => {
   }, [location.pathname, location.search]);
 
   useEffect(() => {
+    let cancelled = false;
+
     const loadContent = async () => {
       setLoading(true);
       setError('');
@@ -43,15 +45,26 @@ const Browse = () => {
           ? await contentService.getTrending()
           : await contentService.getAllContent(params);
 
-        setContent(Array.isArray(data) ? data : data.content || []);
+        if (!cancelled) {
+          setContent(Array.isArray(data) ? data : data.content || []);
+        }
       } catch (err) {
-        setError(err.response?.data?.message || err.message || 'Failed to load content');
+        if (!cancelled) {
+          setError(err.response?.data?.message || err.message || 'Failed to load content');
+          setContent([]);
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     };
 
     loadContent();
+
+    return () => {
+      cancelled = true;
+    };
   }, [params, trending]);
 
   return (

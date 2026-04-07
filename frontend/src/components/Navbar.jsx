@@ -4,10 +4,15 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 const linkClass = ({ isActive }) =>
   `hover:text-secondary transition ${isActive ? 'text-secondary' : 'text-white'}`;
 
+const mobileLinkClass = ({ isActive }) =>
+  `block py-2 hover:text-secondary transition ${isActive ? 'text-secondary' : 'text-white'}`;
+
 const Navbar = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [search, setSearch] = React.useState('');
+
+  const isAuthenticated = Boolean(localStorage.getItem('token'));
 
   const onSearch = (e) => {
     e.preventDefault();
@@ -33,16 +38,21 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center space-x-4">
-            <form onSubmit={onSearch}>
+            <form onSubmit={onSearch} className="hidden md:block">
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search..."
-                className="hidden md:block px-4 py-2 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-secondary"
+                className="px-4 py-2 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-secondary"
               />
             </form>
-            <button onClick={() => navigate('/login')} className="text-white hover:text-secondary transition">Profile</button>
+            <button
+              onClick={() => navigate(isAuthenticated ? '/profile' : '/login')}
+              className="text-white hover:text-secondary transition"
+            >
+              {isAuthenticated ? 'Profile' : 'Sign In'}
+            </button>
             <button
               className="md:hidden"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -56,10 +66,10 @@ const Navbar = () => {
 
         {isMenuOpen && (
           <div className="md:hidden pb-4 space-y-2">
-            <NavLink to="/" onClick={() => setIsMenuOpen(false)} className="block text-white hover:text-secondary transition py-2">Home</NavLink>
-            <NavLink to="/movies" onClick={() => setIsMenuOpen(false)} className="block text-white hover:text-secondary transition py-2">Movies</NavLink>
-            <NavLink to="/shows" onClick={() => setIsMenuOpen(false)} className="block text-white hover:text-secondary transition py-2">Shows</NavLink>
-            <NavLink to="/trending" onClick={() => setIsMenuOpen(false)} className="block text-white hover:text-secondary transition py-2">Trending</NavLink>
+            <NavLink to="/" onClick={() => setIsMenuOpen(false)} className={mobileLinkClass}>Home</NavLink>
+            <NavLink to="/movies" onClick={() => setIsMenuOpen(false)} className={mobileLinkClass}>Movies</NavLink>
+            <NavLink to="/shows" onClick={() => setIsMenuOpen(false)} className={mobileLinkClass}>Shows</NavLink>
+            <NavLink to="/trending" onClick={() => setIsMenuOpen(false)} className={mobileLinkClass}>Trending</NavLink>
           </div>
         )}
       </div>
