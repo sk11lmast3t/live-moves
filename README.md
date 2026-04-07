@@ -253,10 +253,6 @@ This repository is configured for Vercel **experimental services** (multi-servic
 - `frontend` service (Vite app) at route prefix `/`
 - `backend` service (Node/Express app) at route prefix `/_/backend`
 
-`vercel.json` also rewrites:
-- `/api/*` -> `/_/backend/api/*`
-- `/health` -> `/_/backend/health`
-
 ### Required environment variables (Vercel Project Settings)
 
 Backend service:
@@ -266,12 +262,12 @@ Backend service:
 - `CORS_ORIGIN` (set to your frontend Vercel URL)
 
 Frontend service:
-- `VITE_API_URL` (optional; default `/api`) **build-time variable**: Vite embeds `VITE_` variables during build, so changing this value requires a rebuild/redeploy (including Vercel redeploy).
+- `VITE_API_URL` (optional; default `/_/backend/api`) **build-time variable**: Vite embeds `VITE_` variables during build, so changing this value requires a rebuild/redeploy (including Vercel redeploy).
 
 ### Vercel setup
 1. Import the repository into Vercel.
 2. Keep root directory as repository root.
 3. Ensure the project uses `experimentalServices` from `vercel.json`.
 4. Add env vars to the correct service scopes (frontend/backend).
-5. Deploy and verify `/health` and `/api/content`.
+5. Deploy and verify `/_/backend/health` and `/_/backend/api/content` (or your custom `VITE_API_URL` path).
 
